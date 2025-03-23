@@ -53,24 +53,46 @@
             };
           });
 
-          # Since xorq might depend on cityhash, add override for it too
+          daff = prev.daff.overrideAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ final.resolveBuildSystem {
+              setuptools = [ ];
+              wheel = [ ];
+            };
+          });
+
+          # Remove all conflicting namespace files from dbt-duckdb
+          dbt-duckdb = prev.dbt-duckdb.overrideAttrs (oldAttrs: {
+            postInstall = (oldAttrs.postInstall or "") + ''
+              rm -f $out/lib/python3.12/site-packages/dbt/__init__.py
+              rm -f $out/lib/python3.12/site-packages/dbt/include/__init__.py
+              rm -f $out/lib/python3.12/site-packages/dbt/adapters/__init__.py
+            '';
+          });
+          dbt-flight = prev.buildPythonPackage {
+            pname = "dbt-flight";
+            version = "0.1.0";
+            format = "setuptools";
+            src = ./dbt_flight;
+            propagatedBuildInputs = with final; [
+              dbt-core
+            ];
+            doCheck = false;
+          };
+
           xorq = prev.xorq.overrideAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ final.resolveBuildSystem {
               setuptools = [ ];
               wheel = [ ];
             };
 
-            # Add buildInputs if there are C dependencies
             buildInputs = (old.buildInputs or [ ]) ++ [
               pkgs.openssl
             ];
           });
         };
 
-        # Python version to use
         python = pkgs.python312;
 
-        # Construct the Python package set
         pythonSet =
           (pkgs.callPackage pyproject-nix.build.packages {
             inherit python;
@@ -134,11 +156,11 @@
               pkgs.uv
             ];
             shellHook = ''
-              echo "DEBUG: Entered standard shell with prebuilt packages"
               unset PYTHONPATH
               export UV_NO_SYNC=1
               export UV_PYTHON="${venv}/bin/python"
               export UV_PYTHON_DOWNLOADS=never
+              export PYTHONPATH="$PWD/dbt_xorq_project:$PYTHONPATH"
               ${pre-commit-check.shellHook}
             '';
           };
@@ -150,27 +172,13 @@
               pkgs.uv
             ];
             shellHook = ''
-              echo "DEBUG: Entered editable shell"
               unset PYTHONPATH
               export UV_NO_SYNC=1
               export UV_PYTHON="${venv-editable}/bin/python"
               export UV_PYTHON_DOWNLOADS=never
+              export PYTHONPATH="$PWD/dbt_xorq_project:$PYTHONPATH"
               export REPO_ROOT=$(git rev-parse --show-toplevel)
               ${pre-commit-check.shellHook}
-            '';
-          };
-
-          # Impure shell that just provides Python and uv
-          impure = pkgs.mkShell {
-            packages = [
-              python
-              pkgs.uv
-            ];
-            shellHook = ''
-              echo "DEBUG: Entered impure shell"
-              unset PYTHONPATH
-              export UV_PYTHON_DOWNLOADS=never
-              export UV_PYTHON="${python}/bin/python"
             '';
           };
         };
