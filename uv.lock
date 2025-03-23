@@ -778,7 +778,7 @@ requires-dist = [
     { name = "dbt-duckdb", specifier = ">=1.9.2" },
     { name = "pyiceberg", extras = ["sql-sqlite"], specifier = ">=0.9.0" },
     { name = "urllib3", specifier = ">=2.2.3" },
-    { name = "xorq", specifier = ">=0.1.16" },
+    { name = "xorq", specifier = ">=0.1.17" },
 ]
 
 [package.metadata.requires-dev]
@@ -1570,7 +1570,7 @@ wheels = [
 
 [[package]]
 name = "xorq"
-version = "0.1.16"
+version = "0.1.17"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "atpublic" },
@@ -1594,15 +1594,15 @@ dependencies = [
     { name = "toolz" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a4/f2/6bed68866978e705b24e6816fa88416b79b7def10561a2be5d85ab74b814/xorq-0.1.16.tar.gz", hash = "sha256:e9369572abc9de19a2eb9f4bdf7db79301f520579cdae82b03038bfe64151866", size = 21105460 }
+sdist = { url = "https://files.pythonhosted.org/packages/2f/23/8c44f243bf92f5bad08825a8dc07c593072a36583c2abd3115e7d90989eb/xorq-0.1.17.tar.gz", hash = "sha256:fd499b8f5d36694bb78ea682e273dc86e9b3b6a1fba22763f6621f95fe5ed3e0", size = 21318895 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0d/7b/e0868ed670e873321c4c6a331ae040f844baf14f24fac38a5233e819a9b4/xorq-0.1.16-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:dad3353eaa8c479c19823a4781b9bbad6292c3158eda47439790a7fe1cb0a870", size = 32082203 },
-    { url = "https://files.pythonhosted.org/packages/de/7a/1eee9a15027db851007201397c33f5d445ae1c6b6e5b5e791ddd89fa2e36/xorq-0.1.16-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:e02f9c46284b1a3176971017c46163e74aed1c40b6a3d0f1a49777349429297c", size = 30574892 },
-    { url = "https://files.pythonhosted.org/packages/8d/41/1e5a71b1a16cc9a48cb2cc6d88b6eca74e4f20070da8968410c9a07214fa/xorq-0.1.16-cp38-abi3-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d1c2311dfbfd4492cd6d9a495065744322e36685b280872e1dfca9db4efc0113", size = 38180549 },
-    { url = "https://files.pythonhosted.org/packages/d4/fc/41f991af6255d884b8c8b49c2211450f39ff548c81a353a1cfabe12a17f3/xorq-0.1.16-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1671ace4ef437373d2ca8d3965f4317f0380ec63dd6806296ccca081e0177ca2", size = 35164386 },
-    { url = "https://files.pythonhosted.org/packages/39/58/0deb2a537c9633b59c5b0634a64df6804ff02b4c43ef4b95f15cb5083911/xorq-0.1.16-cp38-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:9806eedf27c8ec6746926b97882b8d6be681008aba8c8b67940375f0a146d409", size = 34804056 },
-    { url = "https://files.pythonhosted.org/packages/17/99/79ab6e7b9e4f658015d047988d765f274c206dc08577464d84fdf793d1c9/xorq-0.1.16-cp38-abi3-win32.whl", hash = "sha256:0b476d16ee6dc3b3842d41cbce85dfd904f3234d3d2502653215cc9894dad919", size = 26519827 },
-    { url = "https://files.pythonhosted.org/packages/d1/c2/4b70361507a4b8b27d11981e49e424573d0b8eb96cc6e343037fbd25686b/xorq-0.1.16-cp38-abi3-win_amd64.whl", hash = "sha256:00f29f0e7e583331658664d49c269b6008a70b66c4841b46a21472052680b73e", size = 29414236 },
+    { url = "https://files.pythonhosted.org/packages/43/eb/56a11ddc6ee0898dbadafe8370c41cb2db6675d5a86f025003612f1fdabe/xorq-0.1.17-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:5e81c09d9d28482491031aa3900be4ef2acf83d1b909daa0c600590d9e974377", size = 33203599 },
+    { url = "https://files.pythonhosted.org/packages/3d/ce/0449d4b1cf72e5504262ae46cfe49e3ce54c3a70c2963e256bcd0f8632d4/xorq-0.1.17-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:5fdcae747a6d97f6f57a8f5e678d94e2177f03a73d349ec90ca2d6541fb0e4ca", size = 31451330 },
+    { url = "https://files.pythonhosted.org/packages/bd/c9/13010af7f65440d6832bd52735c07b6da9bfad09193f7c7bdc0835e57c09/xorq-0.1.17-cp38-abi3-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:214f2c998efc2c7d44049b3849b4c2ef45c71a5e3aea9fa32b92fb72b5dc9e40", size = 38924225 },
+    { url = "https://files.pythonhosted.org/packages/df/50/2f369312afdea95a8f8d95a6916dc8519bccd2be1304e111f2ffdcd10206/xorq-0.1.17-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:63c4e56e44c225dcc4b1e624f402faa0c189ed55f70af3c5aa2adea80878a4b9", size = 35766792 },
+    { url = "https://files.pythonhosted.org/packages/eb/8c/cf778c091d8a2de8afa18d2b98928df0c8b04ae3706a600b561db32c8b94/xorq-0.1.17-cp38-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:13d6b50547558cea23d6a0ae7b8e8eeccbd73e01e0fa4d19543c2e5f35665576", size = 34729204 },
+    { url = "https://files.pythonhosted.org/packages/e4/23/0d31481237899213be18733b9728f2ef3895240caf4430874350c8f1613b/xorq-0.1.17-cp38-abi3-win32.whl", hash = "sha256:d1e892b438853fb33ca8f3801160dad404f702cf630598ce4007025d44f199fe", size = 27271780 },
+    { url = "https://files.pythonhosted.org/packages/8f/67/3b089b6fd24b0b626b69fffd08c6e0b30abf4430083d49c1101502250893/xorq-0.1.17-cp38-abi3-win_amd64.whl", hash = "sha256:02a6b85639d30f6f100fb6602b78d02f7b9d7bfecf0f1e56cc42d3255b50ef1b", size = 30175317 },
 ]
 
 [[package]]

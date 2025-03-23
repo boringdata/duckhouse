@@ -1,0 +1,8 @@
+**/__pycache__/**
+dbt_xorq_project/target
+dbt_xorq_project/logs
+*.envrc
+.direnv/
+.pre-commit-config.yaml
+logs/
+**.egg-info/

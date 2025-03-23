@@ -21,6 +21,7 @@ table_name = "concurrent_test"
 namespace = "default"
 
 
+# TODO: move to xorq main so that we do not have to write a connector ourselves
 class IcebergConnector:
     def __init__(self, warehouse_path):
         self.warehouse_path = Path(warehouse_path).absolute()
@@ -77,6 +78,7 @@ class IcebergConnector:
             return True
 
         iceberg_fields = []
+        # TODO: make this generic across all types
         for i, field in enumerate(data.schema, 1):
             if pa.types.is_int64(field.type):
                 iceberg_type = LongType()
@@ -86,7 +88,7 @@ class IcebergConnector:
                 iceberg_type = StringType()
 
             iceberg_fields.append(
-                NestedField(i, field.name, iceberg_type, required=True)
+               NestedField(i, field.name, iceberg_type, required=False)
             )
 
         iceberg_schema = Schema(*iceberg_fields)
@@ -103,14 +105,19 @@ class IcebergConnector:
 
         iceberg_table = self.catalog.load_table(full_table_name)
         iceberg_table.refresh()
+        print(f"Schema: {data.schema}")
 
         with iceberg_table.transaction() as transaction:
             transaction.append(data)
+
+        print(f"Inserted: {data}")
+        print(f"Schema: {data.schema}")
 
         return True
 
     def to_pyarrow_batches(self, expr, **kwargs):
         self._reflect_views()
+        print(f"Read expr: {expr}")
 
         return self.con.to_pyarrow_batches(expr)
 

@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: xorq_flight
+    config:
+      plugin: flight
+    tables:
+      - name: concurrent_test
+        description: "Iceberg table via Flight server"

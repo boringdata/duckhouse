@@ -7,7 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "dbt-duckdb>=1.9.2",
     "pyiceberg[sql-sqlite]>=0.9.0",
-    "xorq>=0.1.16",
+    "xorq>=0.1.17",
     "urllib3>=2.2.3",
 ]
 
