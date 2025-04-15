@@ -6,3 +6,4 @@ dbt_xorq_project/logs
 .pre-commit-config.yaml
 logs/
 **.egg-info/
+profiles.yaml

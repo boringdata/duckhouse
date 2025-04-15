@@ -7,7 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "dbt-duckdb>=1.9.2",
     "pyiceberg[sql-sqlite]>=0.9.0",
-    "xorq>=0.1.17",
+    "xorq",
     "urllib3>=2.2.3",
 ]
 
@@ -23,3 +23,4 @@ py-modules = ["dbt_xorq_project"]
 
 [tool.uv.sources]
 multi-engine-data-stack-arrow-flight = { workspace = true }
+xorq = {path = "/home/hussainsultan/workspace/xorq/dist/xorq-0.2.0-cp38-abi3-linux_x86_64.whl"}

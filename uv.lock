@@ -778,7 +778,7 @@ requires-dist = [
     { name = "dbt-duckdb", specifier = ">=1.9.2" },
     { name = "pyiceberg", extras = ["sql-sqlite"], specifier = ">=0.9.0" },
     { name = "urllib3", specifier = ">=2.2.3" },
-    { name = "xorq", specifier = ">=0.1.17" },
+    { name = "xorq", path = "../xorq/dist/xorq-0.2.0-cp38-abi3-linux_x86_64.whl" },
 ]
 
 [package.metadata.requires-dev]
@@ -1570,8 +1570,8 @@ wheels = [
 
 [[package]]
 name = "xorq"
-version = "0.1.17"
-source = { registry = "https://pypi.org/simple" }
+version = "0.2.0"
+source = { path = "../xorq/dist/xorq-0.2.0-cp38-abi3-linux_x86_64.whl" }
 dependencies = [
     { name = "atpublic" },
     { name = "attrs", marker = "python_full_version < '4.0'" },
@@ -1584,6 +1584,7 @@ dependencies = [
     { name = "parsy" },
     { name = "pyarrow", marker = "python_full_version < '4.0'" },
     { name = "pyarrow-hotfix", marker = "python_full_version < '4.0'" },
+    { name = "pyiceberg", extra = ["sql-sqlite"] },
     { name = "pytest-mock", marker = "python_full_version < '4.0'" },
     { name = "python-dateutil" },
     { name = "pythran", marker = "sys_platform == 'darwin'" },
@@ -1594,16 +1595,51 @@ dependencies = [
     { name = "toolz" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2f/23/8c44f243bf92f5bad08825a8dc07c593072a36583c2abd3115e7d90989eb/xorq-0.1.17.tar.gz", hash = "sha256:fd499b8f5d36694bb78ea682e273dc86e9b3b6a1fba22763f6621f95fe5ed3e0", size = 21318895 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/43/eb/56a11ddc6ee0898dbadafe8370c41cb2db6675d5a86f025003612f1fdabe/xorq-0.1.17-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:5e81c09d9d28482491031aa3900be4ef2acf83d1b909daa0c600590d9e974377", size = 33203599 },
-    { url = "https://files.pythonhosted.org/packages/3d/ce/0449d4b1cf72e5504262ae46cfe49e3ce54c3a70c2963e256bcd0f8632d4/xorq-0.1.17-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:5fdcae747a6d97f6f57a8f5e678d94e2177f03a73d349ec90ca2d6541fb0e4ca", size = 31451330 },
-    { url = "https://files.pythonhosted.org/packages/bd/c9/13010af7f65440d6832bd52735c07b6da9bfad09193f7c7bdc0835e57c09/xorq-0.1.17-cp38-abi3-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:214f2c998efc2c7d44049b3849b4c2ef45c71a5e3aea9fa32b92fb72b5dc9e40", size = 38924225 },
-    { url = "https://files.pythonhosted.org/packages/df/50/2f369312afdea95a8f8d95a6916dc8519bccd2be1304e111f2ffdcd10206/xorq-0.1.17-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:63c4e56e44c225dcc4b1e624f402faa0c189ed55f70af3c5aa2adea80878a4b9", size = 35766792 },
-    { url = "https://files.pythonhosted.org/packages/eb/8c/cf778c091d8a2de8afa18d2b98928df0c8b04ae3706a600b561db32c8b94/xorq-0.1.17-cp38-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:13d6b50547558cea23d6a0ae7b8e8eeccbd73e01e0fa4d19543c2e5f35665576", size = 34729204 },
-    { url = "https://files.pythonhosted.org/packages/e4/23/0d31481237899213be18733b9728f2ef3895240caf4430874350c8f1613b/xorq-0.1.17-cp38-abi3-win32.whl", hash = "sha256:d1e892b438853fb33ca8f3801160dad404f702cf630598ce4007025d44f199fe", size = 27271780 },
-    { url = "https://files.pythonhosted.org/packages/8f/67/3b089b6fd24b0b626b69fffd08c6e0b30abf4430083d49c1101502250893/xorq-0.1.17-cp38-abi3-win_amd64.whl", hash = "sha256:02a6b85639d30f6f100fb6602b78d02f7b9d7bfecf0f1e56cc42d3255b50ef1b", size = 30175317 },
+    { filename = "xorq-0.2.0-cp38-abi3-linux_x86_64.whl", hash = "sha256:347dd67591319abd3e0089aacb83f110f49ec43884e659a78993541059465c8f" },
 ]
+
+[package.metadata]
+requires-dist = [
+    { name = "adbc-driver-postgresql", marker = "extra == 'examples'", specifier = ">=1.4.0" },
+    { name = "adbc-driver-postgresql", marker = "extra == 'postgres'", specifier = ">=1.4.0" },
+    { name = "atpublic", specifier = ">=5.1" },
+    { name = "attrs", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = ">=24.0.0,<26" },
+    { name = "cityhash", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = ">=0.4.7,<1" },
+    { name = "cloudpickle", specifier = ">=3.1.1" },
+    { name = "dask", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = "==2025.1.0" },
+    { name = "datafusion", marker = "python_full_version >= '3.10' and python_full_version < '4.0' and extra == 'datafusion'", specifier = ">=0.6,<46" },
+    { name = "duckdb", marker = "python_full_version >= '3.10' and python_full_version < '4.0' and extra == 'examples'", specifier = ">=0.10.3,<2" },
+    { name = "duckdb", marker = "extra == 'duckdb'", specifier = ">=1.1.3" },
+    { name = "envyaml", specifier = ">=1.10.211231" },
+    { name = "fsspec", marker = "python_full_version >= '3.10' and python_full_version < '4.0' and extra == 'examples'", specifier = ">=2024.6.1,<2025.3.3" },
+    { name = "geoarrow-types", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = ">=0.2,<1" },
+    { name = "mcp", marker = "extra == 'examples'", specifier = ">=1.5.0" },
+    { name = "openai", marker = "extra == 'examples'", specifier = ">=1.65.4" },
+    { name = "pandas", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = ">=1.5.3,<3" },
+    { name = "parsy", specifier = ">=2" },
+    { name = "pins", extras = ["gcs"], marker = "python_full_version >= '3.10' and python_full_version < '4.0' and extra == 'examples'", specifier = ">=0.8.3,<1" },
+    { name = "psycopg2-binary", marker = "extra == 'examples'", specifier = ">=2.9.10" },
+    { name = "psycopg2-binary", marker = "extra == 'postgres'", specifier = ">=2.9.10" },
+    { name = "pyarrow", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = ">=13.0.0,<20" },
+    { name = "pyarrow-hotfix", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = ">=0.4,<1" },
+    { name = "pyiceberg", extras = ["sql-sqlite"], specifier = ">=0.9.0" },
+    { name = "pytest-mock", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = ">=3.14.0,<4" },
+    { name = "python-dateutil", specifier = ">=2.8.2" },
+    { name = "pythran", marker = "sys_platform == 'darwin'", specifier = ">=0.17.0" },
+    { name = "pytz", specifier = ">=2022.7" },
+    { name = "pyyaml", specifier = ">=6.0.2" },
+    { name = "quickgrove", marker = "extra == 'examples'", specifier = ">=0.1.2" },
+    { name = "quickgrove", marker = "extra == 'quickgrove'", specifier = ">=0.1.2" },
+    { name = "scikit-learn", marker = "extra == 'examples'", specifier = ">=1.4.0,<2.0.0" },
+    { name = "snowflake-connector-python", marker = "python_full_version >= '3.10' and python_full_version < '4.0' and extra == 'snowflake'", specifier = ">=3.10.1,<4" },
+    { name = "sqlglot", specifier = "==25.20.2" },
+    { name = "structlog", marker = "python_full_version >= '3.10' and python_full_version < '4.0'", specifier = ">=24.2.0,<26" },
+    { name = "toolz", specifier = ">=0.11" },
+    { name = "typing-extensions", specifier = ">=4.3.0" },
+    { name = "xgboost", marker = "python_full_version >= '3.10' and python_full_version < '4.0' and extra == 'examples'", specifier = ">=1.6.1" },
+]
+provides-extras = ["duckdb", "datafusion", "snowflake", "quickgrove", "examples", "postgres"]
 
 [[package]]
 name = "zipp"
