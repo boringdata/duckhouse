@@ -1,9 +1,14 @@
+import os
+import shutil
 import time
 from datetime import datetime
 from typing import Optional
 
+from pathlib import Path
+
 import toolz
 import pyarrow as pa
+import xorq as xo
 from xorq.backends.pyiceberg import Backend as PyIcebergBackend
 
 from xorq.flight import FlightServer, FlightUrl
@@ -15,6 +20,18 @@ logger= get_print_logger()
 class CustomBackend(PyIcebergBackend):
     def __init__(self):
          super().__init__()
+         self.SNAPSHOT_DIR = Path("snapshots").absolute()
+         Path(self.SNAPSHOT_DIR).mkdir(exist_ok=True)
+
+    def do_connect(
+        self, 
+        **kwargs
+    ) -> None:
+        super().do_connect(**kwargs)
+
+        self.duckdb_con = xo.duckdb.connect("default_db")
+        self._setup_duckdb_connection()
+        self._reflect_views()
 
     def insert(
          self,
@@ -30,13 +47,17 @@ class CustomBackend(PyIcebergBackend):
          
          return result
 
-    def _create_snapshot_and_export(self):
-        logger.info("Creating snapshot")
-        for t in self.duckdb_con.tables:
-            self.duckdb_con.raw_sql(f"CREATE TABLE {t}_snapshot as SELECT * FROM {t};")
+    def _create_snapshot_and_export(self) -> None:
+        ts = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        snap_path = os.path.join(self.SNAPSHOT_DIR, f"{ts}.duckdb")
         
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.duckdb_con.raw_sql(f"EXPORT DATABASE 'snapshot_{timestamp}' (FORMAT parquet);")
+        for t in self.duckdb_con.tables:
+            self.duckdb_con.raw_sql(f"CREATE OR REPLACE TABLE {t}_snapshot as SELECT * FROM {t};")
+
+        self.duckdb_con.raw_sql("CHECKPOINT default_db")
+        shutil.copy("default_db", snap_path)
+
+        logger.info("Snapshot written to %s (copied from %s)", snap_path, "default_db")
 
 
 def run_server(warehouse_path, port, table_name):
@@ -67,7 +88,7 @@ def run_server(warehouse_path, port, table_name):
             ]
         ),
     )
-    server.server._conn.create_table(table_name, table)
+    server.server._conn.create_table(table_name, table, overwrite=True)
 
     logger.info(f"Flight server started at grpc://localhost:{port}")
     while server.server is not None:

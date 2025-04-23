@@ -2,6 +2,7 @@
 dbt_xorq_project/target
 dbt_xorq_project/logs
 *.envrc
+*.envrc.secrets
 .direnv/
 .pre-commit-config.yaml
 logs/
