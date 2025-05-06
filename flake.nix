@@ -79,7 +79,7 @@
             doCheck = false;
           };
           xorq = prev.xorq.overrideAttrs (old: {
-            src = /home/hussainsultan/workspace/xorq/dist/xorq-0.2.0-cp38-abi3-linux_x86_64.whl;
+            src = /home/hussainsultan/workspace/xorq/dist/xorq-0.2.1-py3-none-any.whl;
             format = "wheel";
 
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ final.resolveBuildSystem {
