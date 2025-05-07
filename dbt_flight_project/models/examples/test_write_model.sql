@@ -2,6 +2,7 @@
   config(
     materialized='external',
     adapter_plugin='flight',
+    target='iceberg',
     overrides={
       'table_name': 'concurrent_test'  
     }
