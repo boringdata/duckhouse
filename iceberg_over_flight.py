@@ -73,8 +73,15 @@ class CustomBackend(PyIcebergBackend):
     ) -> bool:
         logger.info(f"Inserting data into {table_name}")
         logger.info(f"target: {target}")
-        result = super().create_table(table_name, data, database=database, overwrite=overwrite)
-        logger.info(f"Data inserted successfully: {result}")
+        if target == "iceberg":
+            result = super().create_table(table_name, data, database=database, overwrite=overwrite)
+            logger.info(f"Data inserted successfully: {result} in {target}")
+
+        elif target == "duckdb":
+            result = self.duckdb_con.create_table(table_name, data, database=database)
+            logger.info(f"Data inserted successfully: {result} in {target}")
+        else:
+            raise Exception("target must be specified")
         return result
 
     def insert(
@@ -87,8 +94,14 @@ class CustomBackend(PyIcebergBackend):
     ) -> bool:
         logger.info(f"Inserting data into {table_name}")
         logger.info(f"target: {target}")
-        result = super().insert(table_name, data, database, mode)
-        logger.info(f"Data inserted successfully: {result}")
+        if target=="iceberg":
+            result = super().insert(table_name, data, database, mode)
+            logger.info(f"Data inserted successfully: {result} in {target}")
+        elif target=="duckdb":
+            result = self.duckdb_con.insert(table_name, data, database)
+            logger.info(f"Data inserted successfully: {result} in {target}")
+        else:
+            raise Exception("target must be specified")
         self._create_snapshot_and_export()
         
         return result
@@ -208,7 +221,6 @@ def run_server(warehouse_path, port, table_name, duckdb_path=None, snapshot_dir=
             ]
         ),
     )
-    server.server._conn.create_table(table_name, table, overwrite=True)
 
     from xorq.flight.client import FlightClient
 
@@ -217,7 +229,7 @@ def run_server(warehouse_path, port, table_name, duckdb_path=None, snapshot_dir=
             port
         )
 
-    flight_client.upload_data("my_table", table, target= "duckdb")
+    flight_client.upload_data(table_name, table, target= "iceberg")
     logger.info(f"Uploaded data to grpc://localhost:{port}")
 
     logger.info(f"Flight server started at grpc://localhost:{port}")
