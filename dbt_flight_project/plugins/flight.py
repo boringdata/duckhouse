@@ -31,7 +31,7 @@ class Plugin(BasePlugin):
 
     def load(self, source_config: SourceConfig):
         table_name = source_config.identifier
-        logger.info(f"Loading data from Iceberg table: {table_name}")
+        logger.info(f"Loading data from Flight: {table_name}")
         schema = get_table_schema(self._client, f"{table_name}")
         table_ref = xo.table(name=table_name, schema=schema)
         logger.info(f"table_ref: {table_name}")
@@ -48,8 +48,11 @@ class Plugin(BasePlugin):
             overrides = target_config.config.get('overrides', {})
             if 'table_name' in overrides:
                 table_name = overrides['table_name']
+
+            target = target_config.config.get('target')
         
-        logger.info(f"Storing data to Iceberg table: {table_name}")
+        logger.info(f"Storing data to Flight: {table_name}")
+        logger.info(f"Using target: {target}")
         
         from dbt.adapters.duckdb.plugins import pd_utils
         df = pd_utils.target_to_df(target_config)
@@ -57,7 +60,7 @@ class Plugin(BasePlugin):
         import pyarrow as pa
         arrow_table = pa.Table.from_pandas(df)
         
-        self._client.upload_data(table_name, arrow_table)
+        self._client.upload_data(table_name, arrow_table, target=target)
         logger.info(f"Successfully uploaded {len(df)} rows to {table_name}")
 
     def default_materialization(self):
