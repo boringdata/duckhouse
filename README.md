@@ -1,4 +1,4 @@
-# Multi-Engine: dbt-duckdb with Flight and Iceberg
+# Duckhouse: DuckDB + Iceberg + Flight
 
 `dbt-duckdb` → `xo.FlightServer` → `pyiceberg` (with read path using `duckdb` with Iceberg extension)
 
