@@ -7,10 +7,10 @@ requires-python = ">=3.12"
 dependencies = [
     "dbt-duckdb>=1.9.2",
     "pyiceberg[sql-sqlite]>=0.9.0",
-    "xorq",
     "urllib3>=2.2.3",
     "snowflake-connector-python>=3.14.0",
     "opentelemetry-api>=1.32.1",
+    "xorq>=0.2.2",
 ]
 
 [dependency-groups]
@@ -22,7 +22,3 @@ dev = [
 
 [tool.setuptools]
 py-modules = ["dbt_xorq_project"]
-
-[tool.uv.sources]
-multi-engine-data-stack-arrow-flight = { workspace = true }
-xorq = {path = "dist/xorq-0.2.1-py3-none-any.whl"}

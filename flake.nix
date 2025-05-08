@@ -78,19 +78,6 @@
             ];
             doCheck = false;
           };
-          xorq = prev.xorq.overrideAttrs (old: {
-            src = /home/hussainsultan/workspace/xorq/dist/xorq-0.2.1-py3-none-any.whl;
-            format = "wheel";
-
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ final.resolveBuildSystem {
-              setuptools = [ ];
-              wheel = [ ];
-            };
-
-            buildInputs = (old.buildInputs or [ ]) ++ [
-              pkgs.openssl
-            ];
-          });
         };
 
         python = pkgs.python312;
