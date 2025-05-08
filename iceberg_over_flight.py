@@ -106,6 +106,7 @@ class CustomBackend(PyIcebergBackend):
         else:
             raise Exception("target must be specified")
         self._create_snapshot_and_export()
+        self._reflect_views()
         
         return result
     
