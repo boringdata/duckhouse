@@ -1,6 +1,7 @@
 {{ config(
     materialized='table',
-    adapter_plugin='flight'
+    adapter_plugin='flight',
+    target= "iceberg"
 ) }}
 
 -- Read from the source table

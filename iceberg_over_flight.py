@@ -24,7 +24,6 @@ class CustomBackend(PyIcebergBackend):
         super().__init__(warehouse_path=warehouse_path, **kwargs)
         self.duckdb_path = None
         self.SNAPSHOT_DIR = None
-        self.CHECKPOINT_DIR = None
         
         # If warehouse_path was provided during initialization, connect immediately
         if warehouse_path is not None:
@@ -82,6 +81,7 @@ class CustomBackend(PyIcebergBackend):
             logger.info(f"Data inserted successfully: {result} in {target}")
         else:
             raise Exception("target must be specified")
+        self._reflect_views()
         return result
 
     def insert(
@@ -90,7 +90,8 @@ class CustomBackend(PyIcebergBackend):
         data,
         database: Optional[str] = None,
         mode: str = "append",
-        target: str =""
+        target: str ="",
+        **kwargs
     ) -> bool:
         logger.info(f"Inserting data into {table_name}")
         logger.info(f"target: {target}")
@@ -98,11 +99,14 @@ class CustomBackend(PyIcebergBackend):
             result = super().insert(table_name, data, database, mode)
             logger.info(f"Data inserted successfully: {result} in {target}")
         elif target=="duckdb":
+            # TODO: we may be inserting into a view of the same name since we
+            # are reflecting schema from Iceberg as views
             result = self.duckdb_con.insert(table_name, data, database)
             logger.info(f"Data inserted successfully: {result} in {target}")
         else:
             raise Exception("target must be specified")
         self._create_snapshot_and_export()
+        self._reflect_views()
         
         return result
     
@@ -230,6 +234,7 @@ def run_server(warehouse_path, port, table_name, duckdb_path=None, snapshot_dir=
         )
 
     flight_client.upload_data(table_name, table, target= "iceberg")
+    # flight_client.upload_data(table_name, table, target= "duckdb", overwrite=True)
     logger.info(f"Uploaded data to grpc://localhost:{port}")
 
     logger.info(f"Flight server started at grpc://localhost:{port}")
