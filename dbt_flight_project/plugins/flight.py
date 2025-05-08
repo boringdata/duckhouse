@@ -35,7 +35,7 @@ class Plugin(BasePlugin):
         schema = get_table_schema(self._client, f"{table_name}")
         table_ref = xo.table(name=table_name, schema=schema)
         logger.info(f"table_ref: {table_name}")
-        result = self._client.execute_query(table_ref.as_table())
+        result = self._client.execute(table_ref.as_table())
         
         return result
 
