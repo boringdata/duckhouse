@@ -78,16 +78,6 @@
             ];
             doCheck = false;
           };
-          xorq = prev.xorq.overrideAttrs (old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ final.resolveBuildSystem {
-              setuptools = [ ];
-              wheel = [ ];
-            };
-
-            buildInputs = (old.buildInputs or [ ]) ++ [
-              pkgs.openssl
-            ];
-          });
         };
 
         python = pkgs.python312;
