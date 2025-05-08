@@ -31,59 +31,30 @@ flowchart LR
 
 ## Getting Started
 ### Installing Dependencies
-
-This project uses uv for dependency management. To install dependencies:
-
-Override the wheel location in pyproject.toml:
-If you need to use a locally built wheel for xorq,
-you can modify the tool.uv.sources section in your pyproject.toml:
-
 ```
-toml[tool.uv.sources]
-multi-engine-data-stack-arrow-flight = { workspace = true }
-xorq = { path = "/path/to/your/xorq-0.2.0-cp38-abi3-linux_x86_64.whl" }
-```
-
-### Run
-```bash
-cd dbt_xorq_project
-export PYTHONPATH="$PWD:$PYTHONPATH"
-dbt run
-```
-
-### Prerequisites
-Before using this plugin, you need:
-1. A running xorq Flight server with configured Iceberg catalog
-2. The xorq Python package installed (`pip install xorq`)
-3. PyArrow installed (`pip install pyarrow`)
-
-## Configuration
-
-### Profile Configuration
-In your `profiles.yml` file, configure dbt to use the Flight plugin:
-```yaml
-dbt_xorq:
-  target: dev
-  outputs:
-    dev:
-      type: duckdb
-      path: ":memory:"
-      plugins:
-        - module: plugins.flight 
-          config:
-            host: localhost
-            port: 8816
-      threads: 1
+uv sync
 ```
 
 ### Running the Flight Server
 You can run the Flight server using the provided script:
 
 ```bash
-python iceberg_over_flight.py serve -w warehouse -p 8816
+uv run iceberg_over_flight.py serve -w warehouse -p 8816
 ```
 
-## Current Status
+### Ingest data
+
+```bash
+curl https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet -o /tmp/yellow_tripdata_2023-01.parquet
+uv run ingestion/ingestion.py
+```
+
+### Run dbt
+```bash
+cd dbt_xorq_project
+export PYTHONPATH="$PWD:$PYTHONPATH"
+dbt run
+```
 
 ### Supported Operations
 - [x] Reading and writing Iceberg tables with Flight Server
