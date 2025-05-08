@@ -25,4 +25,4 @@ py-modules = ["dbt_xorq_project"]
 
 [tool.uv.sources]
 multi-engine-data-stack-arrow-flight = { workspace = true }
-xorq = {path = "/home/hussainsultan/workspace/xorq/dist/xorq-0.2.1-py3-none-any.whl"}
+xorq = {path = "dist/xorq-0.2.1-py3-none-any.whl"}

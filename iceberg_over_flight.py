@@ -49,10 +49,10 @@ class CustomBackend(PyIcebergBackend):
             **kwargs
         )
         
-        self.duckdb_path = duckdb_path or "default_db"
+        self.duckdb_path = duckdb_path or "duckhouse"
         logger.info(f"Connecting to DuckDB at: {self.duckdb_path}")
         
-        self.SNAPSHOT_DIR = Path(snapshot_dir or "snapshots").absolute()
+        self.SNAPSHOT_DIR = Path(snapshot_dir or os.path.join(warehouse_path, "snapshots/")).absolute()
         
         self.SNAPSHOT_DIR.mkdir(exist_ok=True, parents=True)
         
@@ -61,7 +61,8 @@ class CustomBackend(PyIcebergBackend):
         self.duckdb_con = xo.duckdb.connect(self.duckdb_path)
         self._setup_duckdb_connection()
         self._reflect_views()
-    
+        self._create_snapshot_and_export()
+
     def create_table(
         self,
         table_name: str,
@@ -82,6 +83,7 @@ class CustomBackend(PyIcebergBackend):
         else:
             raise Exception("target must be specified")
         self._reflect_views()
+        self._create_snapshot_and_export()
         return result
 
     def insert(
@@ -105,9 +107,9 @@ class CustomBackend(PyIcebergBackend):
             logger.info(f"Data inserted successfully: {result} in {target}")
         else:
             raise Exception("target must be specified")
-        self._create_snapshot_and_export()
         self._reflect_views()
-        
+        self._create_snapshot_and_export()
+ 
         return result
     
     def _reflect_views(self):
@@ -213,27 +215,27 @@ def run_server(warehouse_path, port, table_name, duckdb_path=None, snapshot_dir=
         ),
     )
     server.serve()
-    table = pa.Table.from_pylist(
-        [
-            {"id": 1, "value": "sample_value_1"},
-            {"id": 2, "value": "sample_value_2"},
-        ],
-        schema=pa.schema(
-            [
-                pa.field("id", pa.int64(), nullable=True),
-                pa.field("value", pa.string(), nullable=True),
-            ]
-        ),
-    )
+    # table = pa.Table.from_pylist(
+    #     [
+    #         {"id": 1, "value": "sample_value_1"},
+    #         {"id": 2, "value": "sample_value_2"},
+    #     ],
+    #     schema=pa.schema(
+    #         [
+    #             pa.field("id", pa.int64(), nullable=True),
+    #             pa.field("value", pa.string(), nullable=True),
+    #         ]
+    #     ),
+    # )
 
-    from xorq.flight.client import FlightClient
+    # from xorq.flight.client import FlightClient
 
-    flight_client = FlightClient(
-            "localhost",
-            port
-        )
+    # flight_client = FlightClient(
+    #         "localhost",
+    #         port
+    #     )
 
-    flight_client.upload_data(table_name, table, target= "iceberg")
+    # flight_client.upload_data(table_name, table, target= "iceberg")
     # flight_client.upload_data(table_name, table, target= "duckdb", overwrite=True)
     logger.info(f"Uploaded data to grpc://localhost:{port}")
 
@@ -253,7 +255,7 @@ def main():
     parser.add_argument("-t", "--table-name", default=table_name)
     parser.add_argument("-p", "--port", default=port, type=int)
     parser.add_argument("-d", "--duckdb-path", default=None, 
-                        help="Path to DuckDB database file (defaults to warehouse_path/default_db)")
+                        help="Path to DuckDB database file (defaults to duckhouse)")
     parser.add_argument("-s", "--snapshot-dir", default=None,
                         help="Directory to store snapshots (defaults to warehouse_path/snapshots)")
 

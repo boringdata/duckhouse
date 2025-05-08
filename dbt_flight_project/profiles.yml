@@ -1,0 +1,12 @@
+dbt_xorq:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ":memory:"
+      plugins:
+        - module: plugins.flight 
+          config:
+            host: localhost
+            port: 8816
+      threads: 1

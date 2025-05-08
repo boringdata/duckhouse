@@ -5,5 +5,5 @@ sources:
     config:
       plugin: flight
     tables:
-      - name: concurrent_test
-        description: "Iceberg table via Flight server"
+      - name: taxi
+        description: "Yellow Taxi Data"

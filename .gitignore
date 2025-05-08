@@ -8,3 +8,11 @@ dbt_xorq_project/logs
 logs/
 **.egg-info/
 profiles.yaml
+warehouse/**
+.vscode/**
+snapshots/**
+dbt_flight_project/.user.yml
+dbt_flight_project/target/**
+dbt_flight_project/*.parquet
+default_db**
+duckhouse**
