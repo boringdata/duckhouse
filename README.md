@@ -1,33 +1,16 @@
 # Duckhouse: DuckDB + Iceberg + Flight
 
-`dbt-duckdb` → `xo.FlightServer` → `pyiceberg` (with read path using `duckdb` with Iceberg extension)
+DuckDB has become well-known as a lightweight, portable, and fast OLAP database.
 
-This plugin integrates dbt-duckdb with xorq to define Flight services for Iceberg and DuckDB. It enables dbt models to read from and write to Iceberg tables through a Flight server.
+While it excels as an embedded engine, could we push its boundaries further?
 
-```mermaid
-flowchart LR
-    dbt["dbt-duckdb"] --> flight["xo.FlightServer"]
-    flight --> duckdb["duckdb"]
-    duckdb --> pyiceberg["pyiceberg"]
-    duckdb -.-> parquet["Snapshot"]
-    
-    subgraph "User Environment"
-        dbt
-    end
-    
-    subgraph "Flight Server"
-        flight
-        duckdb
-        pyiceberg
-    end
-    
-    subgraph "Data Storage"
-        iceberg[("Iceberg Tables")]
-        parquet
-    end
-    
-    pyiceberg --> iceberg
-```
+Could we build an actual data platform centered around DuckDB?
+
+This is the idea behind Duckhouse:
+![Duckhouse Architecture](docs/archi.png)
+
+
+Check the full article [here](https://juhache.substack.com/p/3465177b-6c6c-417d-912a-be30ef10dab9?postPreview=paid&updated=2025-05-09T06%3A59%3A14.493Z&audience=everyone&free_preview=false&freemail=true)
 
 ## Getting Started
 ### Installing Dependencies
@@ -36,7 +19,6 @@ uv sync
 ```
 
 ### Running the Flight Server
-You can run the Flight server using the provided script:
 
 ```bash
 uv run iceberg_over_flight.py serve -w warehouse -p 8816
