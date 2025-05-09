@@ -78,7 +78,11 @@ class CustomBackend(PyIcebergBackend):
             logger.info(f"Data inserted successfully: {result} in {target}")
 
         elif target == "duckdb":
-            result = self.duckdb_con.create_table(table_name, data, database=database)
+            #HACK
+            try:
+                result = self.duckdb_con.create_table(table_name, data, database=database)
+            except:
+                result = self.duckdb_con.insert(table_name, data, database)
             logger.info(f"Data inserted successfully: {result} in {target}")
         else:
             raise Exception("target must be specified")
